@@ -26,6 +26,18 @@ class Exercise(db.Model):
 
         return value.strip()
 
+    workout_exercises = db.relationship(
+        'WorkoutExercise',
+        back_populates='exercise',
+        cascade='all, delete-orphan'
+    )
+
+    workouts = db.relationship(
+        'Workout',
+        secondary='workout_exercises',
+        viewonly=True
+    )
+
     def __repr__(self):
         return f'<Exercise {self.name}>'
 
@@ -131,15 +143,3 @@ class WorkoutExercise(db.Model):
 
     def __repr__(self):
         return f'<WorkoutExercise {self.id}>'
-    
-    workout_exercises = db.relationship(
-        'WorkoutExercise',
-        back_populates='exercise',
-        cascade='all, delete-orphan'
-    )
-
-    workouts = db.relationship(
-        'Workout',
-        secondary='workout_exercises',
-        viewonly=True
-    )
